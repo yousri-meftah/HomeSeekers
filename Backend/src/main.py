@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from config import settings
 from fastapi.middleware.cors import CORSMiddleware
-#from api import user
+from api import auth
 
 
 
@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 
-#app.include_router(user.router, prefix="/user", tags=["user"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 
 
