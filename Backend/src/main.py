@@ -3,7 +3,8 @@ import uvicorn
 from config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from api import auth
-
+from api import contract
+from api import home
 
 
 
@@ -29,6 +30,10 @@ app.add_middleware(
 
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+
+app.include_router(home.router, prefix="/home", tags=["home"])
+
+app.include_router(contract.router, prefix="/contract", tags=["contract"])
 
 
 
