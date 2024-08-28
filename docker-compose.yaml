@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: 'rental-backend'
+    command: sh "docker/entrypoint.sh"
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Backend/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend:/backend
+    networks:
+        - main
+    environment:
+      - ENVIRONMENT=LOCAL
+    depends_on:
+        postgres:
+          condition: service_healthy
+        redis:
+          condition: service_started
+
+  postgres:
+    container_name: 'rental-postgres'
+    image: postgres:15.4-alpine
+    env_file:
+      - ./Backend/envs/pg.env
+    expose:
+      - "5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - main
+
+  redis:
+    container_name: 'rental-redis'
+    image: redis:7-alpine
+    expose:
+      - "6379"
+    volumes:
+        - redis-data:/data
+    networks:
+      - main
+
+
+networks:
+    main:
+
+volumes:
+    postgres-data:
+    redis-data:

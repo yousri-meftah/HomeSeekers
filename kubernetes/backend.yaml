@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+      app: rental-backend
+
+spec:
+    selector:
+        app: rental-backend
+    ports:
+        - protocol: TCP
+          port: 8000
+          targetPort: 8000
+    type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rental-backend
+  labels:
+      app: rental-backend
+
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: rental-backend
+    template:
+        metadata:
+            labels:
+                app: rental-backend
+        spec:
+            containers:
+              - name: rental-backend
+                image: yousri1/rental:latest
+                imagePullPolicy: Always
+                ports:
+                    - containerPort: 8000
+                command: ["/bin/sh"]
+                args: ["-c", "sh docker/scripts/entrypoint.sh"]
+                envFrom:
+                  - configMapRef:
+                      name: rental-env
+                env:
+                  - name: ENVIRONMENT
+                    value: "PRODUCTION"
