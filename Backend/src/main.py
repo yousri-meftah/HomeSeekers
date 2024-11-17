@@ -3,10 +3,6 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from api import auth , department,contract,home,user
 
-
-
-
-
 app = FastAPI(
     title='PointOfSell',
     description='FastApi PointOfSell Project',

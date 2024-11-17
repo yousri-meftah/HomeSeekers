@@ -4,7 +4,7 @@ WORKDIR /backend
 
 RUN pip install --upgrade pip
 
-COPY Backend/requirements.txt /backend/requirements.txt
+COPY /Backend/requirements.txt /backend/requirements.txt
 
 RUN pip install -r requirements.txt
 

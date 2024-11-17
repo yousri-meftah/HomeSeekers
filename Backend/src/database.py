@@ -4,6 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 from config import settings
 
+print("url = ",settings.POSTGRES_URL)
+
 engine = create_engine(settings.POSTGRES_URL)
 
 
